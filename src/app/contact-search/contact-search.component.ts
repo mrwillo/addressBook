@@ -33,7 +33,7 @@ export class ContactSearchComponent implements OnInit {
     this.tags$ = this.tagTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap((term: string) => this.tagService.getTags())
+      switchMap((term: string) => this.contactService.getTags())
     );
   }
 

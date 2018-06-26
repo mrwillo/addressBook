@@ -27,7 +27,7 @@ export class ContactsComponent implements OnInit {
   }
 
   popupTag(contact: Contact): void {
-    this.con
+    //this.con
   }
 
   // getTagsOfContact(contact): Observable<ContactTag> {

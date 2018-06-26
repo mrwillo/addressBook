@@ -26,8 +26,8 @@ export class ContactsComponent implements OnInit {
     this.selectedContact = contact;
   }
 
-  getContacts(): void {
-    this.contacts$ = this.contactService.getContacts();
+  popupTag(contact: Contact): void {
+    this.con
   }
 
   // getTagsOfContact(contact): Observable<ContactTag> {

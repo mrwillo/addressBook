@@ -4,6 +4,7 @@ import {ContactService} from '../contact.service';
 import {Observable, Subject} from 'rxjs';
 import {ContactTag} from '../commons/models/ContactTag';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/internal/operators';
+import {TagService} from '../tag.service';
 
 @Component({
   selector: 'app-contact-search',
@@ -19,7 +20,8 @@ export class ContactSearchComponent implements OnInit {
   private tagTerms = new Subject<string>();
 
   constructor(
-    private contactService: ContactService
+    private contactService: ContactService,
+    private tagService: TagService
   ) { }
 
   ngOnInit() {
@@ -31,7 +33,7 @@ export class ContactSearchComponent implements OnInit {
     this.tags$ = this.tagTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap((term: string) => this.contactService.getTags())
+      switchMap((term: string) => this.tagService.getTags())
     );
   }
 

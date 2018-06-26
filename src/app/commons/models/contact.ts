@@ -5,6 +5,8 @@ export class Contact {
   skype: string;
   phone: string;
   linkedIn: string;
-  title: string;
+  company: string;
+  isPopup?: boolean;
+  tags?: any;
 }
 

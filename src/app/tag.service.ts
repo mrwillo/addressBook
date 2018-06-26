@@ -19,4 +19,14 @@ export class TagService {
   getTags(): Observable<ContactTag[]> {
     return of(mockTags);
   }
+  addTag (tag: ContactTag): Observable<ContactTag> {
+    const id = Math.floor(Math.random() * 100);
+    return of({id: id, name: tag.name});
+  }
+  deleteTag(tag: ContactTag): Observable<any> {
+    return of();
+  }
+  updateTag(tag: ContactTag): Observable<ContactTag>{
+    return of(tag);
+  }
 }

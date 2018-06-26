@@ -1,3 +1,9 @@
-<p>
-  contact-tags works!
-</p>
+<div class="contact-tag">
+  <div *ngFor="let tag of tags">
+    <a>
+      {{contact.tags[tag.id] ? '[x]' : '[ ]'}} {{tag.name}}
+    </a>
+    <div class="tag-edit"><a (click)="editTag(tag)">Edit</a> / <a (click)="deleteTag(tag)">Delete</a></div>
+  </div>
+  <input #tagName placeholder="Add Tag and press Enter" class="input-tag" (keyup)="addTag($event, tagName.value)" [(ngModel)]="selectedTag.name">
+</div>

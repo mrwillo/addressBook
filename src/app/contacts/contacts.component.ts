@@ -3,6 +3,7 @@ import {Contact} from '../commons/models/contact';
 import {ContactService} from '../contact.service';
 import {Observable} from 'rxjs';
 import {ContactTag} from '../commons/models/ContactTag';
+import {Tag} from '@angular/compiler/src/i18n/serializers/xml_helper';
 
 @Component({
   selector: 'app-contacts',
@@ -27,11 +28,14 @@ export class ContactsComponent implements OnInit {
   }
 
   popupTag(contact: Contact): void {
-    //this.con
+    contact.isPopup = !contact.isPopup;
   }
-
-  // getTagsOfContact(contact): Observable<ContactTag> {
-  //   this.contactService.getTagsOfContact(contact.id);
+  updateTags(contact: Contact, tag: ContactTag): void {
+    if (!contact.tags) { contact.tags = []; }
+    if (!contact.tags[tag.id]) { contact.tags.push(tag.id); }
+  }
+  // getTagsOfContact(contact: Contact): Contact[] {
+  //   this.contactService.getTagsOfContact(contact.id).
   // }
 
 

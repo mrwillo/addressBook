@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
 
-import { Contact } from './commons/models/contact';
+import {Contact} from './commons/models/contact';
 import {ContactTag} from './commons/models/ContactTag';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
 const mockTags = [
@@ -17,40 +17,40 @@ const mockTags = [
   {id: 3, name: 'Service Provider'},
   {id: 4, name: 'Team member'},
 ];
+
 const mockContacts = [
-  {id: 1, name: 'sanial', phone: '0909002052',
+  {
+    id: 1, name: 'sanial', phone: '0909002052',
     email: 'sanial@email.com',
     skype: 'sanialSkype',
     linkedIn: 'http://linkedIn/duy/86',
-    title: 'Director at Sample Compnay' },
-  {id: 2, name: 'sanial', phone: '0909002052',
+    company: 'Director at Sample Compnay'
+  },
+  {
+    id: 2, name: 'sanial', phone: '0909002052',
     email: 'sanial@email.com',
     skype: 'sanialSkype',
     linkedIn: 'http://linkedIn/duy/86',
-    title: 'Director at Sample Compnay' },
-  {id: 3, name: 'sanial', phone: '0909002052',
+    company: 'Director at Sample Compnay'
+  },
+  {
+    id: 3, name: 'sanial', phone: '0909002052',
     email: 'sanial@email.com',
     skype: 'sanialSkype',
     linkedIn: 'http://linkedIn/duy/86',
-    title: 'Director at Sample Compnay' }
+    company: 'Director at Sample Compnay'
+  }
 ];
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ContactService {
 
-  private contactUrl = 'api/contacts';  // URL to web api
+  private contactUrl = 'http://localhost:3000/contacts/';  // URL to web api
   private tagUrl = 'api/tags';
 
-  constructor(
-    private http: HttpClient) { }
-
-  /** GET heroes from the server */
-  getContacts (): Observable<Contact[]> {
-    return this.http.get<Contact[]>(this.contactUrl)
-      .pipe(
-        catchError(this.handleError<Contact[]>('getContacts', []))
-      );
+  constructor(private http: HttpClient) {
   }
+
 
   searchContact(term: string): Observable<Contact[]> {
     if (!term.trim()) {
@@ -66,9 +66,11 @@ export class ContactService {
   getTags(): Observable<ContactTag[]> {
     return of(mockTags);
   }
+
   searchContactByTag(tag: ContactTag): Observable<Contact[]> {
     return of(mockContacts.splice(0, 2));
   }
+
   getContact(id: number): Observable<Contact> {
     return of(mockContacts.find(c => c.id === id));
   }
@@ -80,7 +82,7 @@ export class ContactService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
       console.error(error); // log to console instead

@@ -22,7 +22,10 @@
   position: absolute;
   top:25%;
   right:5%;
-  background-color:#d6d6d6;
+
+}
+.tagv-btn button {
+  background-color:#dcecf1;
 }
 .contact-item-selected {
   background-color:#cbd6d8 !important;

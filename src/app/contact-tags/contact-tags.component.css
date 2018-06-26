@@ -1,0 +1,23 @@
+.contact-tag {
+  background-color:#c7e9f1;
+  padding:20px;
+  border-radius: 1px;
+  width: 400px;
+  position: absolute;
+  z-index: 100;
+}
+.tag-edit {
+  float:right;
+}
+.tag-edit a {
+  font-size: 12px;
+  font-weight: bold;
+}
+.input-tag {
+  padding: 8px;
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 6px;
+  background-color: #f5f4f4;
+}
+

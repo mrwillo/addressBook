@@ -42,6 +42,9 @@ export class ContactSearchComponent implements OnInit {
       this.searchTerms.next(term);
     }
   }
+  searchByTag(tag: ContactTag): void {
+    this.contacts$ = this.contactService.searchContactByTag(tag);
+  }
 
   getSearchTags(term: string): void {
     // this.contactService.getTags().subscribe(tags => {

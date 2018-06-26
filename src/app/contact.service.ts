@@ -66,6 +66,9 @@ export class ContactService {
   getTags(): Observable<ContactTag[]> {
     return of(mockTags);
   }
+  searchContactByTag(tag: ContactTag): Observable<Contact[]> {
+    return of(mockContacts.splice(0, 2));
+  }
 
 
   /**

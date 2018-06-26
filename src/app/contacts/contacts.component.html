@@ -1,4 +1,7 @@
-<div *ngFor="let contact of contacts$ | async" class="contact-item">
+<div *ngFor="let contact of contacts$ | async" class="contact-item"
+     [class.contact-item-selected]="contact===selectedContact"
+     (click)="selectContact(contact)"
+>
   <p class="contact-name">
     {{contact.name | uppercase}}
 

@@ -12,20 +12,23 @@ import {ContactTag} from '../commons/models/ContactTag';
 export class ContactsComponent implements OnInit {
   @Input() contacts$: Observable<Contact[]>;
   tagsOfContact$: Observable<ContactTag[]>;
+  selectedContact: Contact;
 
   constructor(
     public contactService: ContactService
   ) { }
 
   ngOnInit() {
-    //this.getContacts();
+    // this.getContacts();
   }
 
-  // getContacts(): void {
-  //   this.contactService.getContacts().subscribe(contacts => {
-  //     this.contacts = contacts;
-  //   });
-  // }
+  selectContact(contact: Contact): void {
+    this.selectedContact = contact;
+  }
+
+  getContacts(): void {
+    this.contacts$ = this.contactService.getContacts();
+  }
 
   // getTagsOfContact(contact): Observable<ContactTag> {
   //   this.contactService.getTagsOfContact(contact.id);

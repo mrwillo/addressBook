@@ -9,6 +9,11 @@
   padding:20px;
   position:relative;
 }
+
+.contact-item:hover {
+  cursor: pointer;
+}
+
 .contact-item:nth-child(odd) {
   background-color:#f4f4f5;
 }
@@ -19,3 +24,7 @@
   right:5%;
   background-color:#d6d6d6;
 }
+.contact-item-selected {
+  background-color:#5d5b5b !important;
+}
+

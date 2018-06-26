@@ -5,9 +5,9 @@
   font-weight: bold;
 }
 .contact-item {
-  font-size: 20px;
   padding:20px;
   position:relative;
+  display: block;
 }
 
 .contact-item:hover {
@@ -25,6 +25,12 @@
   background-color:#d6d6d6;
 }
 .contact-item-selected {
-  background-color:#5d5b5b !important;
+  background-color:#cbd6d8 !important;
+  border: 1px solid gray;
+}
+.contact-list {
+  float:left;
+  width: 69%;
+  border:1px solid gray;
 }
 

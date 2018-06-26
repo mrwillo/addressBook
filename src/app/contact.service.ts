@@ -69,6 +69,9 @@ export class ContactService {
   searchContactByTag(tag: ContactTag): Observable<Contact[]> {
     return of(mockContacts.splice(0, 2));
   }
+  getContact(id: number): Observable<Contact> {
+    return of(mockContacts.find(c => c.id === id));
+  }
 
 
   /**

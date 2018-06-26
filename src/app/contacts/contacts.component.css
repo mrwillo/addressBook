@@ -1,0 +1,21 @@
+.tag-item {
+  margin-right:10px;
+}
+.contact-name {
+  font-weight: bold;
+}
+.contact-item {
+  font-size: 20px;
+  padding:20px;
+  position:relative;
+}
+.contact-item:nth-child(odd) {
+  background-color:#f4f4f5;
+}
+
+.tagv-btn {
+  position: absolute;
+  top:25%;
+  right:5%;
+  background-color:#d6d6d6;
+}

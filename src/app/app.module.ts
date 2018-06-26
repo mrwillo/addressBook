@@ -6,6 +6,10 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
 import { ContactTagsComponent } from './contact-tags/contact-tags.component';
 import { ContactSearchComponent } from './contact-search/contact-search.component';
+import {HttpClientModule} from '@angular/common/http';
+import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
+import {InMemoryDataService} from './in-memory-data.service';
+import {AppRoutingModule} from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +20,12 @@ import { ContactSearchComponent } from './contact-search/contact-search.componen
     ContactSearchComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, {dataEncapsulation: false}
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]

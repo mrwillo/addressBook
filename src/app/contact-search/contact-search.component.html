@@ -1,3 +1,18 @@
-<p>
-  contact-search works!
-</p>
+<div id="search-component">
+  <input #searchBox id="search-box" class="search-box"
+         (keyup)="search(searchBox.value)"
+         placeholder="Search by Name, Company or #Tag"
+  />
+
+  <ul class="search-result" *ngIf="searchBox.value==='#'">
+    <li *ngFor="let contact of tags$ | async" >
+      <a routerLink="/detail/{{contact.id}}">
+        {{contact.name}}
+      </a>
+    </li>
+  </ul>
+</div>
+<hr/>
+<div>
+  <app-contacts [contacts$]="contacts$"></app-contacts>
+</div>

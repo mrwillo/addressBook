@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Contact} from '../commons/models/contact';
+import {ContactService} from '../contact.service';
+import {Observable, Subject} from 'rxjs';
+import {ContactTag} from '../commons/models/ContactTag';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-contact-search',
@@ -8,10 +12,40 @@ import {Contact} from '../commons/models/contact';
 })
 export class ContactSearchComponent implements OnInit {
   contacts: Contact[];
+  tags$: Observable<ContactTag[]>;
+  contacts$: Observable<Contact[]>;
 
-  constructor() { }
+  private searchTerms = new Subject<string>();
+  private tagTerms = new Subject<string>();
+
+  constructor(
+    private contactService: ContactService
+  ) { }
 
   ngOnInit() {
+    this.contacts$ = this.searchTerms.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.contactService.searchContact(term))
+    );
+    this.tags$ = this.tagTerms.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.contactService.getTags())
+    );
   }
 
+  search(term: string): void {
+    if (term.trim() === '#') {
+      this.tagTerms.next(term);
+    } else {
+      this.searchTerms.next(term);
+    }
+  }
+
+  getSearchTags(term: string): void {
+    // this.contactService.getTags().subscribe(tags => {
+    //   //this.tags$ = tags;
+    // });
+  }
 }

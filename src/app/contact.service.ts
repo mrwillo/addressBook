@@ -5,66 +5,68 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Contact } from './commons/models/contact';
+import {ContactTag} from './commons/models/ContactTag';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
+const mockTags = [
+  {id: 1, name: 'Consutant'},
+  {id: 2, name: 'Mentor'},
+  {id: 3, name: 'Service Provider'},
+  {id: 4, name: 'Team member'},
+];
+const mockContacts = [
+  {id: 1, name: 'sanial', phone: '0909002052',
+    email: 'sanial@email.com',
+    skype: 'sanialSkype',
+    linkedIn: 'http://linkedIn/duy/86',
+    title: 'Director at Sample Compnay' },
+  {id: 2, name: 'sanial', phone: '0909002052',
+    email: 'sanial@email.com',
+    skype: 'sanialSkype',
+    linkedIn: 'http://linkedIn/duy/86',
+    title: 'Director at Sample Compnay' },
+  {id: 3, name: 'sanial', phone: '0909002052',
+    email: 'sanial@email.com',
+    skype: 'sanialSkype',
+    linkedIn: 'http://linkedIn/duy/86',
+    title: 'Director at Sample Compnay' }
+];
+
 @Injectable({ providedIn: 'root' })
-export class HeroService {
+export class ContactService {
 
   private contactUrl = 'api/contacts';  // URL to web api
+  private tagUrl = 'api/tags';
 
   constructor(
     private http: HttpClient) { }
 
   /** GET heroes from the server */
   getContacts (): Observable<Contact[]> {
-    return this.http.get<Contact[]>(this.contactUrl);
+    return this.http.get<Contact[]>(this.contactUrl)
+      .pipe(
+        catchError(this.handleError<Contact[]>('getContacts', []))
+      );
   }
 
+  searchContact(term: string): Observable<Contact[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+    return of(mockContacts);
+  }
 
+  getTagsOfContact(id: number): Observable<ContactTag[]> {
+    return of(mockTags);
+  }
 
-  // /* GET heroes whose name contains search term */
-  // searchContact(term: string): Observable<Hero[]> {
-  //   if (!term.trim()) {
-  //     // if not search term, return empty hero array.
-  //     return of([]);
-  //   }
-  //   return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
-  //     tap(_ => this.log(`found heroes matching "${term}"`)),
-  //     catchError(this.handleError<Hero[]>('searchHeroes', []))
-  //   );
-  // }
+  getTags(): Observable<ContactTag[]> {
+    return of(mockTags);
+  }
 
-  //////// Save methods //////////
-  //
-  // /** POST: add a new hero to the server */
-  // addHero (hero: Hero): Observable<Hero> {
-  //   return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
-  //     tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
-  //     catchError(this.handleError<Hero>('addHero'))
-  //   );
-  // }
-  //
-  // /** DELETE: delete the hero from the server */
-  // deleteHero (hero: Hero | number): Observable<Hero> {
-  //   const id = typeof hero === 'number' ? hero : hero.id;
-  //   const url = `${this.heroesUrl}/${id}`;
-  //
-  //   return this.http.delete<Hero>(url, httpOptions).pipe(
-  //     tap(_ => this.log(`deleted hero id=${id}`)),
-  //     catchError(this.handleError<Hero>('deleteHero'))
-  //   );
-  // }
-  //
-  // /** PUT: update the hero on the server */
-  // updateHero (hero: Hero): Observable<any> {
-  //   return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
-  //     tap(_ => this.log(`updated hero id=${hero.id}`)),
-  //     catchError(this.handleError<any>('updateHero'))
-  //   );
-  // }
 
   /**
    * Handle Http operation that failed.
@@ -75,11 +77,7 @@ export class HeroService {
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
-      // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

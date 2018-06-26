@@ -1,6 +1,17 @@
-<ul>
-  <li *ngFor="let contact of contacts">
-    {{contact.name}}
-    {{contact.phone}}
-  </li>
-</ul>
+<div *ngFor="let contact of contacts$ | async" class="contact-item">
+  <p class="contact-name">
+    {{contact.name | uppercase}}
+
+  </p>
+  <p class="contact-title">
+    {{contact.title}}
+  </p>
+  <button class="tagv-btn">
+    TAGS V
+  </button>
+  <div>
+    <button *ngFor="let tag of contactService.getTagsOfContact(contact.id) | async" class="tag-item">
+      {{tag.name}}
+    </button>
+  </div>
+</div>

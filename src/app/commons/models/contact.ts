@@ -3,6 +3,8 @@ export class Contact {
   name: string;
   email: string;
   skype: string;
-  phone: number;
+  phone: string;
   linkedIn: string;
+  title: string;
 }
+

@@ -6,6 +6,7 @@ import {catchError, map, tap} from 'rxjs/operators';
 
 import {Contact} from './commons/models/contact';
 import {ContactTag} from './commons/models/ContactTag';
+import {ApiResult} from './commons/models/ApiResult';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -44,9 +45,9 @@ const mockContacts = [
 
 @Injectable({providedIn: 'root'})
 export class ContactService {
-
-  private contactUrl = 'http://localhost:3000/contacts/';  // URL to web api
-  private tagUrl = 'api/tags';
+  private host = 'http://localhost:23789';
+  private contactUrl = this.host + '/api/contact/';  // URL to web api
+  private tagUrl = '/api/tags';
 
   constructor(private http: HttpClient) {
   }
@@ -56,19 +57,23 @@ export class ContactService {
     if (!term.trim()) {
       return of([]);
     }
-    return of(mockContacts);
+    // return of(mockContacts);
+    const url = this.contactUrl + '?tagId=0&keyword=' + term;
+    return this.http.get<ApiResult>(url, httpOptions).pipe(
+      map(res => res.data),
+      catchError(this.handleError('list contact', []))
+    );
   }
 
-  getTagsOfContact(id: number): Observable<ContactTag[]> {
-    return of(mockTags);
-  }
-
-  getTags(): Observable<ContactTag[]> {
+  getTagsOfContact(contact: Contact): Observable<ContactTag[]> {
     return of(mockTags);
   }
 
   searchContactByTag(tag: ContactTag): Observable<Contact[]> {
-    return of(mockContacts.splice(0, 2));
+    const url = this.contactUrl + '?keyword=&tagId=' + tag.id;
+    return this.http.get<ApiResult>(url, httpOptions).pipe(
+      map(res => res.data)
+    );
   }
 
   getContact(id: number): Observable<Contact> {

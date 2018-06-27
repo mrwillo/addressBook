@@ -8,5 +8,6 @@ export class Contact {
   company: string;
   isPopup?: boolean;
   tags?: any;
+  tagObjs?: any;
 }
 

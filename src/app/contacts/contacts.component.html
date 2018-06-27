@@ -20,11 +20,9 @@
         <app-contact-tags [contact]="contact"></app-contact-tags>
       </div>
     </div>
-
-    <div>
-      <button *ngFor="let tag of contactService.getTagsOfContact(contact.id) | async" class="tag-item">
-        {{tag.name}}
-        {{updateTags(contact, tag)}}
+    <div *ngIf="contact.tags !==''">
+      <button *ngFor="let tag of tagsOfContact(contact)" class="tag-item">
+       {{tag.name}}
       </button>
     </div>
   </div>

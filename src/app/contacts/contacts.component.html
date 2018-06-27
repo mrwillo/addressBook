@@ -1,5 +1,5 @@
 <div class="contact-list">
-  <div *ngFor="let contact of contacts$ | async" class="contact-item"
+  <div *ngFor="let contact of contacts" class="contact-item"
        [class.contact-item-selected]="contact===selectedContact"
        (click)="selectContact(contact)"
        routerLink="/contact/{{contact.id}}"
@@ -21,8 +21,8 @@
       </div>
     </div>
     <div *ngIf="contact.tags !==''">
-      <button *ngFor="let tag of tagsOfContact(contact)" class="tag-item">
-       {{tag.name}}
+      <button *ngFor="let tag of contact.tags.split(',')" class="tag-item">
+        {{mapTag[tag] ? mapTag[tag].name : tag}}
       </button>
     </div>
   </div>

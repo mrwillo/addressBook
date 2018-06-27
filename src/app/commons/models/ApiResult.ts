@@ -1,6 +1,6 @@
 export class ApiResult {
   status: boolean;
   id?: number;
-  processmessage?: string;
+  processMessage?: string;
   data?: any;
 }

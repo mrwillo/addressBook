@@ -7,45 +7,15 @@ import {catchError, map, tap} from 'rxjs/operators';
 import {Contact} from './commons/models/contact';
 import {ContactTag} from './commons/models/ContactTag';
 import {ApiResult} from './commons/models/ApiResult';
+import {environment} from '../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
-const mockTags = [
-  {id: 1, name: 'Consutant'},
-  {id: 2, name: 'Mentor'},
-  {id: 3, name: 'Service Provider'},
-  {id: 4, name: 'Team member'},
-];
-
-const mockContacts = [
-  {
-    id: 1, name: 'sanial', phone: '0909002052',
-    email: 'sanial@email.com',
-    skype: 'sanialSkype',
-    linkedIn: 'http://linkedIn/duy/86',
-    company: 'Director at Sample Compnay'
-  },
-  {
-    id: 2, name: 'sanial', phone: '0909002052',
-    email: 'sanial@email.com',
-    skype: 'sanialSkype',
-    linkedIn: 'http://linkedIn/duy/86',
-    company: 'Director at Sample Compnay'
-  },
-  {
-    id: 3, name: 'sanial', phone: '0909002052',
-    email: 'sanial@email.com',
-    skype: 'sanialSkype',
-    linkedIn: 'http://linkedIn/duy/86',
-    company: 'Director at Sample Compnay'
-  }
-];
-
 @Injectable({providedIn: 'root'})
 export class ContactService {
-  private host = 'http://localhost:23789';
+  private host = environment.apiServer;
   private contactUrl = this.host + '/api/contact/';  // URL to web api
   private tagUrl = '/api/tags';
 
@@ -65,10 +35,6 @@ export class ContactService {
     );
   }
 
-  getTagsOfContact(contact: Contact): Observable<ContactTag[]> {
-    return of(mockTags);
-  }
-
   searchContactByTag(tag: ContactTag): Observable<Contact[]> {
     const url = this.contactUrl + '?keyword=&tagId=' + tag.id;
     return this.http.get<ApiResult>(url, httpOptions).pipe(
@@ -77,8 +43,12 @@ export class ContactService {
   }
 
   getContact(id: number): Observable<Contact> {
-    return of(mockContacts.find(c => c.id === id));
+    const url = this.contactUrl + '/' + id;
+    return this.http.get<ApiResult>(url, httpOptions).pipe(
+      map(res => res.data)
+    );
   }
+
 
 
   /**

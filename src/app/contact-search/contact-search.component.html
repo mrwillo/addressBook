@@ -5,7 +5,7 @@
   />
 
   <ul class="search-result" *ngIf="searchBox.value==='#'">
-    <li *ngFor="let tag of tags$ | async" >
+    <li *ngFor="let tag of tags" >
       <a routerLink="/contacts" (click)="searchByTag(tag)">
         {{tag.name}}
       </a>
@@ -14,5 +14,7 @@
 </div>
 <br/>
 <div>
-  <app-contacts [contacts$]="contacts$"></app-contacts>
+  <app-contacts [contacts$]="contacts$"
+                [contactsOfTag$]="contactsOfTag$"></app-contacts>
 </div>
+

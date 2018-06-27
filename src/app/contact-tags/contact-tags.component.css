@@ -20,4 +20,9 @@
   border-radius: 6px;
   background-color: #f5f4f4;
 }
-
+.error_msg {
+  color:red;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: bold;
+}

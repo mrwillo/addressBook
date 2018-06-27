@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {ContactTag} from './commons/models/ContactTag';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {ApiResult} from './commons/models/ApiResult';
+import {environment} from '../environments/environment';
 
 const mockTags = [
   {id: 1, name: 'Consutant'},
@@ -18,22 +19,32 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class TagService {
-  private tagUrl = 'http://localhost:23789/api/tags/';
+  private host = environment.apiServer;
+  private tagUrl = this.host + '/api/tags/';
   constructor(private http: HttpClient) { }
 
   getTags(): Observable<ContactTag[]> {
     return this.http.get<ApiResult>(this.tagUrl, httpOptions).pipe(
-      map(res => res.data),
+      map(res => res.data)
     );
   }
   addTag (tag: ContactTag): Observable<ContactTag> {
-    const id = Math.floor(Math.random() * 100);
-    return of({id: id, name: tag.name});
+    return this.http.post<ApiResult>(this.tagUrl, tag, httpOptions).pipe(
+      map(res => res.data)
+    );
   }
-  deleteTag(tag: ContactTag): Observable<any> {
-    return of();
+  deleteTag(tag: ContactTag): Observable<ApiResult> {
+    const url = this.tagUrl + '/' + tag.id;
+    return this.http.delete<ApiResult>(url, httpOptions);
   }
-  updateTag(tag: ContactTag): Observable<ContactTag>{
-    return of(tag);
+  updateTag(tag: ContactTag): Observable<ContactTag> {
+    return this.http.put<ApiResult>(this.tagUrl, tag, httpOptions).pipe(
+      map(res => res.data)
+    );
+  }
+
+  changeTagAssign(contactId: number, tagId: number) {
+    const url = this.tagUrl + '?contactId=' + contactId + '&tagId=' + tagId;
+    return this.http.put<ApiResult>(url, httpOptions);
   }
 }

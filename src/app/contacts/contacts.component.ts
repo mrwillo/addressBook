@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, SimpleChanges, OnChanges} from '@angular/core';
 import {Contact} from '../commons/models/contact';
 import {ContactService} from '../contact.service';
 import {Observable} from 'rxjs';
@@ -11,11 +11,14 @@ import {TagService} from '../tag.service';
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.css']
 })
-export class ContactsComponent implements OnInit {
+export class ContactsComponent implements OnInit, OnChanges {
   @Input() contacts$: Observable<Contact[]>;
+  @Input() contactsOfTag$: Observable<Contact[]>;
   tagsOfContact$: Observable<ContactTag[]>;
   selectedContact: Contact;
   tags: ContactTag[];
+  contacts: Contact[];
+  mapTag: Object;
 
   constructor(
     public contactService: ContactService,
@@ -25,9 +28,26 @@ export class ContactsComponent implements OnInit {
   ngOnInit() {
     this.getContactTag();
   }
+  ngOnChanges() {
+    this.contacts$.subscribe(contacts => {
+      this.contacts = contacts;
+    });
+    if (this.contactsOfTag$) {
+      this.contactsOfTag$.subscribe(contacts => {
+        this.contacts = contacts;
+      });
+    }
+  }
 
   getContactTag(): void {
-    this.tagService.getTags().subscribe(tags => this.tags = tags);
+    this.tagService.getTags().subscribe(tags => {
+      this.mapTag = {};
+      for (const tag of tags) {
+        this.mapTag[tag.id + ''] = tag;
+      }
+      console.log(this.mapTag);
+      this.tags = tags;
+    });
   }
   selectContact(contact: Contact): void {
     this.selectedContact = contact;

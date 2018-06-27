@@ -1,9 +1,12 @@
 <div class="contact-tag">
   <div *ngFor="let tag of tags">
-    <a>
-      {{contact.tags.indexOf(tag.id) > -1 ? '[x]' : '[ ]'}} {{tag.name}}
+    <a (click)="changeTagAssign(contact, tag)">
+      {{tag.isCheck ? '[x]' : '[ ]'}} {{tag.name}}
     </a>
     <div class="tag-edit"><a (click)="editTag(tag)">Edit</a> / <a (click)="deleteTag(tag)">Delete</a></div>
+    <div *ngIf="tag.error" class="error_msg">{{tag.error}}</div>
   </div>
-  <input #tagName placeholder="Add Tag and press Enter" class="input-tag" (keyup)="addTag($event, tagName.value)" [(ngModel)]="selectedTag.name">
+  <input #tagName placeholder="Add Tag and press Enter"
+         class="input-tag" (keyup)="addTag($event, tagName.value);"
+         [(ngModel)]="selectedTag.name">
 </div>

@@ -9,7 +9,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./contact-details.component.css']
 })
 export class ContactDetailsComponent implements OnInit {
-  @Input() contact: Contact;
+  contact: Contact;
 
   constructor(
     private contactService: ContactService,

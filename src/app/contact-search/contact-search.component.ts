@@ -13,8 +13,9 @@ import {TagService} from '../tag.service';
 })
 export class ContactSearchComponent implements OnInit {
   contacts: Contact[];
-  tags$: Observable<ContactTag[]>;
+  tags: ContactTag[];
   contacts$: Observable<Contact[]>;
+  contactsOfTag$: Observable<Contact[]>;
 
   private searchTerms = new Subject<string>();
   private tagTerms = new Subject<string>();
@@ -28,24 +29,23 @@ export class ContactSearchComponent implements OnInit {
     this.contacts$ = this.searchTerms.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap((term: string) => this.contactService.searchContact(term))
-    );
-    this.tags$ = this.tagTerms.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap((term: string) => this.tagService.getTags())
+      switchMap((t: string) => this.contactService.searchContact(t))
     );
   }
 
   search(term: string): void {
     if (term.trim() === '#') {
-      this.tagTerms.next(term);
+      this.tagService.getTags().subscribe(tags => {
+        this.tags = tags;
+      });
     } else {
+
       this.searchTerms.next(term);
+
     }
   }
   searchByTag(tag: ContactTag): void {
-    this.contacts$ = this.contactService.searchContactByTag(tag);
+    this.contactsOfTag$ = this.contactService.searchContactByTag(tag);
   }
 
   getSearchTags(term: string): void {

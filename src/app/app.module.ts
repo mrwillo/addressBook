@@ -8,8 +8,7 @@ import { ContactDetailsComponent } from './contact-details/contact-details.compo
 import { ContactTagsComponent } from './contact-tags/contact-tags.component';
 import { ContactSearchComponent } from './contact-search/contact-search.component';
 import {HttpClientModule} from '@angular/common/http';
-import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
-import {InMemoryDataService} from './in-memory-data.service';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import {AppRoutingModule} from './app-routing.module';
 
 @NgModule({
@@ -24,7 +23,8 @@ import {AppRoutingModule} from './app-routing.module';
     FormsModule,
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    LoadingBarHttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

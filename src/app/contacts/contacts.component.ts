@@ -1,10 +1,11 @@
-import {Component, OnInit, Input, SimpleChanges, OnChanges} from '@angular/core';
+import {Component, OnInit, Input, OnChanges} from '@angular/core';
+import {Location} from '@angular/common';
 import {Contact} from '../commons/models/contact';
 import {ContactService} from '../contact.service';
 import {Observable} from 'rxjs';
 import {ContactTag} from '../commons/models/ContactTag';
-import {Tag} from '@angular/compiler/src/i18n/serializers/xml_helper';
 import {TagService} from '../tag.service';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-contacts',
@@ -21,8 +22,10 @@ export class ContactsComponent implements OnInit, OnChanges {
   mapTag: Object;
 
   constructor(
-    public contactService: ContactService,
-    private tagService: TagService
+    private contactService: ContactService,
+    private tagService: TagService,
+    private location: Location,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -49,11 +52,13 @@ export class ContactsComponent implements OnInit, OnChanges {
       this.tags = tags;
     });
   }
-  selectContact(contact: Contact): void {
+  selectContact($event, contact: Contact): void {
+    if ($event.target.tagName === 'BUTTON') { return; }
+    this.router.navigateByUrl('/contact/' + contact.id);
     this.selectedContact = contact;
   }
 
-  popupTag(contact: Contact): void {
+  popupTag($event, contact: Contact): void {
     contact.isPopup = !contact.isPopup;
   }
   updateTags(contact: Contact, tag: ContactTag): void {

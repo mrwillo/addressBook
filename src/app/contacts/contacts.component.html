@@ -1,29 +1,36 @@
 <div class="contact-list">
-  <div *ngFor="let contact of contacts" class="contact-item"
-       [class.contact-item-selected]="contact===selectedContact"
-       (click)="selectContact(contact)"
-       routerLink="/contact/{{contact.id}}"
-  >
-    <p class="contact-name">
-      {{contact.name | uppercase}}
+  <div *ngFor="let contact of contacts">
+    <div class="contact-item"
+      [class.contact-item-selected]="contact===selectedContact"
+      (click)="selectContact($event, contact)"
+    >
+      <p class="contact-name">
+        {{contact.name | uppercase}}
 
-    </p>
-    <p class="contact-title">
-      {{contact.company}}
-    </p>
+      </p>
+      <p class="contact-title">
+        {{contact.company}}
+      </p>
 
-    <div class="tagv-btn">
-      <button (click)="popupTag(contact)">
-        TAGS V
-      </button>
-      <div class="tag-popup" *ngIf="contact.isPopup">
-        <app-contact-tags [contact]="contact"></app-contact-tags>
+      <div *ngIf="contact.tags !==''">
+        <button *ngFor="let tag of contact.tags.split(',')" class="tag-item">
+          {{mapTag[tag] ? mapTag[tag].name : tag}}
+        </button>
+
+      </div>
+
+      <div class="tagv-btn">
+        <button (click)="popupTag($event, contact)">
+          TAGS V
+        </button>
+        <div class="tag-popup" *ngIf="contact.isPopup">
+          <app-contact-tags [contact]="contact" [tags]="tags"></app-contact-tags>
+        </div>
       </div>
     </div>
-    <div *ngIf="contact.tags !==''">
-      <button *ngFor="let tag of contact.tags.split(',')" class="tag-item">
-        {{mapTag[tag] ? mapTag[tag].name : tag}}
-      </button>
-    </div>
+
+
   </div>
 </div>
+
+

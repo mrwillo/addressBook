@@ -11,7 +11,7 @@ import {P} from '@angular/core/src/render3';
 })
 export class ContactTagsComponent implements OnInit {
   @Input() contact: Contact;
-  tags: ContactTag[];
+  @Input() tags: ContactTag[];
   selectedTag: ContactTag;
 
   constructor(
@@ -20,7 +20,8 @@ export class ContactTagsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getTags();
+    // this.getTags();
+    this.initTagCheck();
     this.selectedTag = {id: 0, name: ''};
   }
 

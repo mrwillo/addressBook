@@ -6,8 +6,9 @@
 }
 .contact-item {
   padding:20px;
-  position:relative;
   display: block;
+  border-bottom:1px solid gray;
+  position: relative;
 }
 
 .contact-item:hover {
@@ -22,7 +23,6 @@
   position: absolute;
   top:25%;
   right:5%;
-
 }
 .tagv-btn button {
   background-color:#dcecf1;
@@ -34,6 +34,7 @@
 .contact-list {
   float:left;
   width: 69%;
-  border:1px solid gray;
+
+  position: relative;
 }
 

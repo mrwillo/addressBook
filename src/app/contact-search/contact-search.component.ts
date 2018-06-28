@@ -34,6 +34,7 @@ export class ContactSearchComponent implements OnInit {
   }
 
   search(term: string): void {
+    if (term.trim() === '') { return; }
     if (term.trim() === '#') {
       this.tagService.getTags().subscribe(tags => {
         this.tags = tags;

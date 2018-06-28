@@ -24,9 +24,9 @@ export class ContactService {
 
 
   searchContact(term: string): Observable<Contact[]> {
-    if (!term.trim()) {
-      return of([]);
-    }
+    // if (!term.trim()) {
+    //   return of([]);
+    // }
     // return of(mockContacts);
     const url = this.contactUrl + '?tagId=0&keyword=' + term;
     return this.http.get<ApiResult>(url, httpOptions).pipe(

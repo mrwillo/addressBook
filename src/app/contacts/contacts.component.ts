@@ -18,6 +18,7 @@ export class ContactsComponent implements OnInit, OnChanges {
   @Input() contacts$: Observable<Contact[]>;
   @Input() contactsOfTag$: Observable<Contact[]>;
   selectedContact: Contact;
+  currentContact: Contact;
   tags: ContactTag[];
   contacts: Contact[];
   mapTag: Object;
@@ -101,6 +102,6 @@ export class ContactsComponent implements OnInit, OnChanges {
    * @param {Contact} contact
    */
   popupTag($event, contact: Contact): void {
-    contact.isPopup = !contact.isPopup;
+    this.currentContact = contact;
   }
 }

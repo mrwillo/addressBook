@@ -91,7 +91,8 @@ export class ContactTagsComponent implements OnInit {
    */
   editTag(tag: ContactTag): void {
     this.selectedTag = Object.create(tag);
-    this. editingTag = tag;
+    this.selectedTag.id = tag.id;
+    this.editingTag = tag;
   }
 
   /**

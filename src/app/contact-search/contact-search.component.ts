@@ -5,6 +5,7 @@ import {Observable, Subject} from 'rxjs';
 import {ContactTag} from '../commons/models/ContactTag';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/internal/operators';
 import {TagService} from '../tag.service';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-contact-search',
@@ -21,7 +22,7 @@ export class ContactSearchComponent implements OnInit {
 
   constructor(
     private contactService: ContactService,
-    private tagService: TagService
+    private tagService: TagService,
   ) { }
 
   ngOnInit() {
@@ -30,6 +31,7 @@ export class ContactSearchComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((t: string) => this.contactService.searchContact(t))
     );
+    this.search(' ');
   }
 
   search(term: string): void {
@@ -38,9 +40,8 @@ export class ContactSearchComponent implements OnInit {
         this.tags = tags;
       });
     } else {
-
       this.searchTerms.next(term);
-
+      console.log('here');
     }
   }
   searchByTag(tag: ContactTag): void {

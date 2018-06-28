@@ -102,6 +102,6 @@ export class ContactsComponent implements OnInit, OnChanges {
    * @param {Contact} contact
    */
   popupTag($event, contact: Contact): void {
-    this.currentContact = contact;
+    this.currentContact === contact ? this.currentContact = null : this.currentContact = contact;
   }
 }

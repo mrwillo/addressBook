@@ -6,6 +6,8 @@ import {Observable} from 'rxjs';
 import {ContactTag} from '../commons/models/ContactTag';
 import {TagService} from '../tag.service';
 import {Router, RouterLink} from '@angular/router';
+import {TagChangeEvent} from '../commons/models/TagChangeEvent';
+import {Events} from '../commons/Events';
 
 @Component({
   selector: 'app-contacts',
@@ -15,7 +17,6 @@ import {Router, RouterLink} from '@angular/router';
 export class ContactsComponent implements OnInit, OnChanges {
   @Input() contacts$: Observable<Contact[]>;
   @Input() contactsOfTag$: Observable<Contact[]>;
-  tagsOfContact$: Observable<ContactTag[]>;
   selectedContact: Contact;
   tags: ContactTag[];
   contacts: Contact[];
@@ -24,13 +25,15 @@ export class ContactsComponent implements OnInit, OnChanges {
   constructor(
     private contactService: ContactService,
     private tagService: TagService,
-    private location: Location,
-    private router: Router,
   ) { }
 
   ngOnInit() {
     this.getContactTag();
   }
+
+  /**
+   * Source of list contact can come form keyword or by tagID
+   */
   ngOnChanges() {
     this.contacts$.subscribe(contacts => {
       this.contacts = contacts;
@@ -42,32 +45,62 @@ export class ContactsComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Event emitted from Tag popup to update list tag without reload it.
+   * Make UI more responsible
+   * @param {boolean} agreed
+   */
+  onTagChange(data: TagChangeEvent) {
+    const contact = this.contacts.find(c => c.id === data.contact.id);
+    switch (data.type) {
+      case Events.addTag:
+        contact.tags = contact.tags + ',' + data.tag.id;
+        break;
+      case Events.deleteTag:
+        this.tags = this.tags.filter(t => t.id !== data.tag.id)
+        break;
+      case Events.removeTag:
+        contact.tags = contact.tags.split(',').filter(i => i !== data.tag.id + '').join(',');
+        break;
+      case Events.assignTag:
+        contact.tags = contact.tags + ',' + data.tag.id;
+        break;
+      default:
+        break;
+    }
+    this.mapTag[data.tag.id] = data.tag;
+  }
+
+  /**
+   * Build map of tag, to easy to integrate receive information of tag
+   */
   getContactTag(): void {
     this.tagService.getTags().subscribe(tags => {
       this.mapTag = {};
       for (const tag of tags) {
         this.mapTag[tag.id + ''] = tag;
       }
-      console.log(this.mapTag);
       this.tags = tags;
     });
   }
+
+  /**
+   * Select the contact, change the navigation to that selected contact;
+   * @param $event
+   * @param {Contact} contact
+   */
   selectContact($event, contact: Contact): void {
     if ($event.target.tagName === 'BUTTON') { return; }
-    this.router.navigateByUrl('/contact/' + contact.id);
+    // this.router.navigateByUrl('/contact/' + contact.id);
     this.selectedContact = contact;
   }
 
+  /**
+   * Open/Close Tag popup
+   * @param $event
+   * @param {Contact} contact
+   */
   popupTag($event, contact: Contact): void {
     contact.isPopup = !contact.isPopup;
-  }
-  updateTags(contact: Contact, tag: ContactTag): void {
-    if (!contact.tags) { contact.tags = []; }
-    if (!contact.tags[tag.id]) { contact.tags.push(tag.id); }
-  }
-  tagsOfContact(contact: Contact): ContactTag[] {
-    const tagIds = contact.tags.split(',').map(Number);
-    contact.tagObjs = this.tags.filter(t => tagIds.indexOf(t.id) > -1);
-    return contact.tagObjs;
   }
 }

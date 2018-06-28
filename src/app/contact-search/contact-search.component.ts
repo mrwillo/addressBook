@@ -18,7 +18,6 @@ export class ContactSearchComponent implements OnInit {
   contactsOfTag$: Observable<Contact[]>;
 
   private searchTerms = new Subject<string>();
-  private tagTerms = new Subject<string>();
 
   constructor(
     private contactService: ContactService,
@@ -34,7 +33,6 @@ export class ContactSearchComponent implements OnInit {
   }
 
   search(term: string): void {
-    if (term.trim() === '') { return; }
     if (term.trim() === '#') {
       this.tagService.getTags().subscribe(tags => {
         this.tags = tags;
@@ -47,11 +45,5 @@ export class ContactSearchComponent implements OnInit {
   }
   searchByTag(tag: ContactTag): void {
     this.contactsOfTag$ = this.contactService.searchContactByTag(tag);
-  }
-
-  getSearchTags(term: string): void {
-    // this.contactService.getTags().subscribe(tags => {
-    //   //this.tags$ = tags;
-    // });
   }
 }

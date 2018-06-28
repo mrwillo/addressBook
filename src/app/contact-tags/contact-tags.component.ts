@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {TagService} from '../tag.service';
 import {ContactTag} from '../commons/models/ContactTag';
 import {Contact} from '../commons/models/contact';
-import {P} from '@angular/core/src/render3';
+import {TagChangeEvent} from '../commons/models/TagChangeEvent';
+import {Events} from '../commons/Events';
 
 @Component({
   selector: 'app-contact-tags',
@@ -12,19 +13,32 @@ import {P} from '@angular/core/src/render3';
 export class ContactTagsComponent implements OnInit {
   @Input() contact: Contact;
   @Input() tags: ContactTag[];
+  @Output() tagChanged = new EventEmitter<TagChangeEvent>();
   selectedTag: ContactTag;
+  editingTag: ContactTag;
 
   constructor(
     private tagService: TagService
   ) { }
 
   ngOnInit() {
-
-    // this.getTags();
     this.initTagCheck();
     this.selectedTag = {id: 0, name: ''};
   }
 
+  /**
+   * Function to Emit event to parent component
+   * @param {ContactTag} tag
+   * @param {Contact} contact
+   * @param {string} type
+   */
+  onTagChange(tag: ContactTag, contact: Contact, type: string) {
+    this.tagChanged.emit({tag: tag, type: type, contact: contact});
+  }
+
+  /**
+   * If current contact has this tag, than mark this tag as checked
+   */
   initTagCheck() {
     const tags = this.contact.tags.split(',').map(Number);
     console.log(tags);
@@ -37,13 +51,12 @@ export class ContactTagsComponent implements OnInit {
       }
     }
   }
-  getTags(): void {
-    this.tagService.getTags().subscribe(tags => {
-      this.tags = tags
-      this.initTagCheck();
-    });
-  }
 
+  /**
+   * Add new tag and Assign Tag to Contact
+   * @param $event
+   * @param {string} name
+   */
   addTag($event, name: string): void {
     if ($event.keyCode !== 13) { return; }
     if (this.selectedTag.id > 0 ) {
@@ -56,33 +69,56 @@ export class ContactTagsComponent implements OnInit {
       .subscribe(tag => {
         this.tags.push(tag);
         $event.target.value = '';
+        this.onTagChange(tag, this.contact, Events.addTag);
       });
   }
 
+  /**
+   * Update Tag information
+   * @param $event
+   */
   updateTag($event): void {
     this.tagService.updateTag(this.selectedTag).subscribe(tag => {
       $event.target.value = '';
+      this.editingTag.name = tag.name;
     });
   }
 
+  /**
+   * Set Tag is in edit mode
+   * @param {ContactTag} tag
+   */
   editTag(tag: ContactTag): void {
-    this.selectedTag = tag;
+    this.selectedTag = Object.create(tag);
+    this. editingTag = tag;
   }
 
+  /**
+   * Assign/Remove tag To/From contact
+   * @param {Contact} contact
+   * @param {ContactTag} tag
+   */
   changeTagAssign(contact: Contact, tag: ContactTag) {
     this.tagService.changeTagAssign(contact.id, tag.id).subscribe(res => {
-      if (res.id === 1) { //assign tag;
+      if (res.id === 1) { // assign tag;
         tag.isCheck = true;
+        this.onTagChange(tag, this.contact, Events.assignTag);
         return;
       }
       tag.isCheck = false;
+      this.onTagChange(tag, this.contact, Events.removeTag);
     });
   }
 
+  /**
+   * Delete Tag
+   * @param {ContactTag} tag
+   */
   deleteTag(tag: ContactTag): void {
     this.tagService.deleteTag(tag).subscribe(res => {
       if (res.status) {
         this.tags = this.tags.filter(t => t.id !== tag.id);
+        this.onTagChange(tag, this.contact, Events.deleteTag);
       } else {
         tag.error = res.processMessage;
       }

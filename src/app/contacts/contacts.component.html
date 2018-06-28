@@ -1,9 +1,10 @@
 <div class="contact-list">
-  <div *ngFor="let contact of contacts">
-    <div class="contact-item"
-      [class.contact-item-selected]="contact===selectedContact"
-      (click)="selectContact($event, contact)"
-    >
+  <div *ngFor="let contact of contacts"
+       class="contact-item"
+       [class.contact-item-selected]="contact===selectedContact"
+  >
+
+    <a (click)="selectContact($event, contact)" routerLink="/contact/{{contact.id}}">
       <p class="contact-name">
         {{contact.name | uppercase}}
 
@@ -11,6 +12,7 @@
       <p class="contact-title">
         {{contact.company}}
       </p>
+    </a>
 
       <div *ngIf="contact.tags !==''">
         <button *ngFor="let tag of contact.tags.split(',')" class="tag-item">
@@ -24,12 +26,9 @@
           TAGS V
         </button>
         <div class="tag-popup" *ngIf="contact.isPopup">
-          <app-contact-tags [contact]="contact" [tags]="tags"></app-contact-tags>
+          <app-contact-tags [contact]="contact" [tags]="tags" (tagChanged)="onTagChange($event)"></app-contact-tags>
         </div>
       </div>
-    </div>
-
-
   </div>
 </div>
 

@@ -6,6 +6,10 @@
   position: absolute;
   z-index: 100;
 }
+.contact-tag a:hover {
+  font-weight: bold;
+  font-style: italic;
+}
 .tag-edit {
   float:right;
 }

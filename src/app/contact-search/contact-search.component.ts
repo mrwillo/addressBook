@@ -31,7 +31,9 @@ export class ContactSearchComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((t: string) => this.contactService.searchContact(t))
     );
-    this.search(' ');
+    setTimeout(() => { // get all list at begining
+      this.search('');
+    });
   }
 
   search(term: string): void {
@@ -41,7 +43,6 @@ export class ContactSearchComponent implements OnInit {
       });
     } else {
       this.searchTerms.next(term);
-      console.log('here');
     }
   }
   searchByTag(tag: ContactTag): void {

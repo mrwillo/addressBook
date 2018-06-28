@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiServer: 'http://localhost:23789'
+  apiServer: 'http://addresswebapi20180628023426.azurewebsites.net',
 };

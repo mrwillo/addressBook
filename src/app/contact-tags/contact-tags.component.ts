@@ -41,7 +41,6 @@ export class ContactTagsComponent implements OnInit {
    */
   initTagCheck() {
     const tags = this.contact.tags.split(',').map(Number);
-    console.log(tags);
     // if (tags.length === 0) { return; }
     for (const tag of this.tags) {
       if (tags.indexOf(tag.id) > -1) {

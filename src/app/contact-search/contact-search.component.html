@@ -3,15 +3,14 @@
          (keyup)="search(searchBox.value)"
          placeholder="Search by Name, Company or #Tag"
   />
-
-  <ul class="search-result" *ngIf="searchBox.value==='#'">
-    <li *ngFor="let tag of tags" >
-      <a routerLink="/contacts" (click)="searchByTag(tag)">
-        {{tag.name}}
-      </a>
-    </li>
-  </ul>
 </div>
+<ul class="search-result" *ngIf="searchBox.value==='#'">
+  <li *ngFor="let tag of tags" >
+    <a (click)="searchByTag(tag)">
+      {{tag.name}}
+    </a>
+  </li>
+</ul>
 <br/>
 <div>
   <app-contacts [contacts$]="contacts$"

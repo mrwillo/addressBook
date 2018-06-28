@@ -30,6 +30,7 @@ export class ContactsComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getContactTag();
+    console.log('call me');
   }
 
   /**

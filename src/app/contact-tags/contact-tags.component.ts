@@ -69,7 +69,8 @@ export class ContactTagsComponent implements OnInit {
       .subscribe(tag => {
         this.tags.push(tag);
         $event.target.value = '';
-        this.onTagChange(tag, this.contact, Events.addTag);
+        // this.onTagChange(tag, this.contact, Events.addTag);
+        this.changeTagAssign(this.contact, tag);
       });
   }
 
@@ -121,6 +122,9 @@ export class ContactTagsComponent implements OnInit {
         this.onTagChange(tag, this.contact, Events.deleteTag);
       } else {
         tag.error = res.processMessage;
+        setTimeout(() => {
+          tag.error = '';
+        }, 2000);
       }
     });
   }
